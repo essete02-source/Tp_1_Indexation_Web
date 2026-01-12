@@ -52,6 +52,10 @@ def get_title(soup):
     title = soup.find('meta',property="og:title")
     return title['content']
 
+def get_description(soup):
+    title = soup.find('p',class_="product-description")
+    return title.text
+
 def extraire_information(url):
     # donnees dans les meta property
     # og:url , og:title , og:description 
@@ -59,7 +63,7 @@ def extraire_information(url):
     soup = html_parser(url)
     links = get_link(soup)
     title = get_title(soup)
-    
+    description = get_description(soup)
 
 
 def html_parser(url):
