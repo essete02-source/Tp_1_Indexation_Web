@@ -33,11 +33,11 @@ def check_politess(url):
 
 def html_parser(url):
     if check_politess(url):
-        response = requests.get(url)
+        response = requests.get(url+rf'/products')
         soup = BeautifulSoup( response.text , 'html.parser')
         print(soup.prettify())
-
-
+        return soup 
+    
 # Extraire titre, premier paragraphe et liens et l’information d’où viennent les liens
 
 def get_link(soup_detail):
@@ -66,9 +66,4 @@ def extraire_information(url):
     description = get_description(soup)
 
 
-def html_parser(url):
-    if check_politess(url):
-        response = requests.get(url+rf'/products')
-        soup = BeautifulSoup( response.text , 'html.parser')
-        return soup 
-        
+# • Implémenter une file d'attente des URLs à visiter
