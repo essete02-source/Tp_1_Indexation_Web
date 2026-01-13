@@ -2,7 +2,9 @@ import urllib.request, urllib.robotparser
 from bs4 import BeautifulSoup
 import json
 import requests
+import re
 
+Dframe_json = []
 url_depart = "https://web-scraping.dev/products"
 
 dict_sortie = {"url":"",
@@ -12,6 +14,7 @@ dict_sortie = {"url":"",
                "links":[]
                } # convertir avec json.dumps, indent
 
+liste_url=[]
 
 def fonction_de_sortie(url_depart,nb_maximum_docs):
     pass
@@ -25,8 +28,6 @@ def check_politess(url):
     response = requests.get(url_robots) # ,headers
     liste = response.text.split('\n\n')
     nos_permissions = [ el for el in liste if el.startswith('User-Agent: *')]
-    print(nos_permissions[0].split('\n'))
-    print(response.text)
     return True # pour l'instant
 
 # Développer une fonction pour parser le HTML
@@ -46,6 +47,8 @@ def get_link(soup_detail):
     links=[]
     for content in balises_avec_link_interessant:
         links.append(content['href'])
+
+    liste_url.extend(links)
     return links
 
 def get_title(soup):
@@ -64,6 +67,28 @@ def extraire_information(url):
     links = get_link(soup)
     title = get_title(soup)
     description = get_description(soup)
+    dict_sortie = {"url":url,
+               "title":title,
+               "description":description,
+               "links":links
+               }
+    Dframe_json.append(dict_sortie)
+    return Dframe_json
 
+def main(url,nb_max):
+    i=0
+    while i < 50:
+        
+        extraire_information(url)
+        i+=1
 
 # • Implémenter une file d'attente des URLs à visiter
+
+def ordre_de_priorite(liste_url):
+    # on va mettre ceux qui ont 'product' ou 'prodcuts' dans une liste et le reste dans une autre , pour prioriser les url 'product' 
+    pass
+
+# Stockage des urls crawlées (10 min)- Sortir les résultats dans un fichier json
+def construire_fichier_json(df):
+    with open('output_json_tp1.json','w',encoding='utf-8') as f:
+        json.dump(df,f,indent=4,ensure_ascii=False)
