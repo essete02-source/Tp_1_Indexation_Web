@@ -151,6 +151,6 @@ def save_index(data_input):
 if __name__ == "__main__":
     # Parser le fichier JSONL
 
-    data_input= pd.read_json('products.jsonl', lines=True)
+    data_input= pd.read_json('output_professeur/products.jsonl', lines=True)
     print(data_input.columns)
     save_index(data_input)
