@@ -27,12 +27,12 @@ def variant_url(data_input):
 
 # Utiliser la tokenization par espace | Supprimer les stopwords et la ponctuation
 
-def nettoyage(texte):
+def clean_texte(texte):
     token_propre=[]
     texte_tokens= texte.lower().split(' ')
     for tok in texte_tokens:
         tok = re.sub(r'[^a-zA-Z0-9]', '', tok)
-        if tok not in stopwords_en:
+        if tok and tok not in stopwords_en:
             token_propre.append(tok)
     return token_propre
 
@@ -44,7 +44,7 @@ def index_inverse(data_input,colonne):
     """
     index_inv = {}
     for index, row in data_input.iterrows():
-        title_tokens = nettoyage(row[colonne])
+        title_tokens = clean_texte(row[colonne])
         for token in title_tokens:
             if token not in index_inv:
                 index_inv[token] = set()
@@ -54,7 +54,6 @@ def index_inverse(data_input,colonne):
 # Créer un index pour les reviews 
 
 def parametres_reviews(row):
-    print(row)
     reviews=row['product_reviews']
     nb_total_reviews = len(reviews)
     if nb_total_reviews>0:
@@ -88,8 +87,8 @@ def index_inv_brand(data_input):
             continue
         brand=row['product_features']['brand']
         if brand not in index_inv:
-            index_inv[brand]=set()
-        index_inv[brand].update(set(row['links']))
+            index_inv[brand]=[]
+        index_inv[brand].append(row['url'])
     return index_inv
 
 def index_inv_origin(data_input):
@@ -99,8 +98,8 @@ def index_inv_origin(data_input):
             continue
         origin=row['product_features']['made in'].lower()
         if origin not in index_inv:
-            index_inv[origin]=set()
-        index_inv[origin].update(set(row['links']))
+            index_inv[origin]=[]
+        index_inv[origin].append(row['url'])
     return index_inv
 
 # Index de position
@@ -108,7 +107,7 @@ def index_inv_origin(data_input):
 def index_inv_title_pos(data_input):
     index_inv={}
     for index,row in data_input.iterrows():
-        liste_token_title = nettoyage(row['title'])
+        liste_token_title = clean_texte(row['title'])
         for pos, token in enumerate(liste_token_title):
             if token not in index_inv:
                 index_inv[token] = {}
@@ -120,7 +119,7 @@ def index_inv_title_pos(data_input):
 def index_inv_description(data_input):
     index_inv={}
     for index,row in data_input.iterrows():
-        liste_token_description = nettoyage(row['description'])
+        liste_token_description = clean_texte(row['description'])
         for pos, token in enumerate(liste_token_description):
             if token not in index_inv:
                 index_inv[token] = {}
@@ -131,27 +130,27 @@ def index_inv_description(data_input):
 
 # Sauvegarde des index
 
-def sauvergade_index(data_input):
-    index_inv_title_pos = index_inv_title_pos(data_input)
-    index_inv_description_pos = index_inv_description(data_input)
+def save_index(data_input):
+    index_inv_title_position = index_inv_title_pos(data_input)
+    index_inv_description_position = index_inv_description(data_input)
     index_brand = index_inv_brand(data_input)
     index_origin = index_inv_origin(data_input)
     reviews_index = index_reviews(data_input)
     with open('title_index.json','w') as f:
-        json.dump(index_inv_title_pos, f)
+        json.dump(index_inv_title_position, f, indent=4, ensure_ascii=False)
     with open('description_index.json','w') as f:
-        json.dump(index_inv_description_pos, f)
+        json.dump(index_inv_description_position, f, indent=4, ensure_ascii=False)
     with open('brand_index.json','w') as f:
-        json.dump(index_brand, f)
+        json.dump(index_brand, f, indent=4, ensure_ascii=False)
     with open('origin_index.json','w') as f:
-        json.dump(index_origin, f)
+        json.dump(index_origin, f, indent=4, ensure_ascii=False)
     with open('reviews_index.json','w') as f:
-        json.dump(reviews_index, f)
+        json.dump(reviews_index, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":
     # Parser le fichier JSONL
 
     data_input= pd.read_json('products.jsonl', lines=True)
-    print(data_input.columns())
-    sauvergade_index(data_input)
+    print(data_input.columns)
+    save_index(data_input)
