@@ -87,3 +87,38 @@ def index_reviews(data_input):
 index_reviews_data = index_reviews(data_input)
 print(index_reviews_data)
 
+# Index des features
+
+def index_inv_brand(data_input):
+    index_inv={}
+    for index, row in data_input.iterrows():
+        if 'brand' not in row['product_features']:
+            continue
+        brand=row['product_features']['brand']
+        if brand not in index_inv:
+            index_inv[brand]=set()
+        index_inv[brand].update(set(row['links']))
+    return index_inv
+
+def index_inv_origin(data_input):
+    index_inv={}
+    for index, row in data_input.iterrows():
+        if 'made in' not in row['product_features']:
+            continue
+        origin=row['product_features']['made in'].lower()
+        if origin not in index_inv:
+            index_inv[origin]=set()
+        index_inv[origin].update(set(row['links']))
+    return index_inv
+
+def index_inv_title_pos(data_input):
+    index_inv={}
+    for index,row in data_input.iterrows():
+        liste_token_title = nettoyage(row['title'])
+        for pos, token in enumerate(liste_token_title):
+            if token not in index_inv:
+                index_inv[token] = {}
+            if row['url'] not in index_inv[token]:
+                index_inv[token][row["url"]] = []
+            index_inv[token][row["url"]].append(pos)
+    return index_inv
