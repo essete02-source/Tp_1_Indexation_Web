@@ -11,7 +11,7 @@ stopwords_en = stopwords.words("english")
 # Lecture et préparation (15 min)
 # Charger les index
 
-def load_json_file(folder):
+def load_json_file(folder="output_indexes"):
     dict_indexes={}
     for file in os.listdir(folder):
         if file.endswith(".json") and file!="products.jsonl":
@@ -58,27 +58,44 @@ def augment_data(liste_token,data_synonyme):
 
 # Créer une fonction qui vérifie si au moins un des tokens est présent
 
-def check_at_least_one_token(liste_tokens,texte):
-    for token in liste_tokens:
-        token = token.lower()
-        if re.search(token,texte.lower()):
-            return True 
-    return False
+def check_at_least_one_token(query_tokens, title_index, description_index):
+    match_elements =set()
+    for token in query_tokens:
+        if token in title_index:
+            match_elements.update(title_index[token].keys())
+        if token in description_index:
+            match_elements.update(description_index[token].keys())
+    return match_elements
 
-def check_all_tokens(liste_tokens,texte):
-    for token in liste_tokens:
-        token = token.lower()
-        if not re.search(token,texte.lower()):
-            return False
-    return True
-
+def check_all_tokens(query_tokens, champ_index): 
+    """ champ = title or description"""
+    listes_url =[]
+    for token in query_tokens:
+        if token in champ_index:
+            listes_url.append(set(champ_index[token].keys()))
+        else:
+            return set() # si au moins un token n'est pas trouvé
+    if listes_url:
+        return set.intersection(*listes_url) # on conserve les urls qui contiennenr tous les tokens
+    else:
+        return set()
 
 # Ranking (30 min)
 
 # Analyser les données disponibles pour identifier les signaux pertinents
+"""
 
-def rank(texte_input,liste_token):
-    n = len(liste_token)
+On donnera plus d'importance aux titres qu'aux descriptions car ils sont moins bruités.
+On donnera également plus d'importance aux urls qui contiennet la requete dans le même ordre.
+On pourra aussi utiliser les notes des reviews pour favoriser ceux avec de bonnes notes.
+On peut également essayer de voir la popularité pour les priviligers.
+
+"""
+def rank(query):
+    query_tokens = clean_texte(query)
+    dict_indexes = load_json_file()
+    urls_set_all_token = check_all_tokens(query_tokens, dict_indexes["title"], dict_indexes["description"])
+    url_set_one_token = check_at_least_one_token(query_tokens, dict_indexes["title"], dict_indexes["description"])
 
 
 def bm25_title():
