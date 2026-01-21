@@ -91,19 +91,67 @@ On pourra aussi utiliser les notes des reviews pour favoriser ceux avec de bonne
 On peut également essayer de voir la popularité pour les priviligers.
 
 """
-def rank(query):
-    query_tokens = clean_texte(query)
-    dict_indexes = load_json_file()
-    urls_set_all_token = check_all_tokens(query_tokens, dict_indexes["title"], dict_indexes["description"])
-    url_set_one_token = check_at_least_one_token(query_tokens, dict_indexes["title"], dict_indexes["description"])
+dict_indexes = load_json_file()
+
+# Titre
+title_indexes = dict_indexes['title_index']
+
+all_urls_title= set()
+
+for docs in title_indexes.values():
+    all_urls_title.update(docs.keys())
+print(f"{len(all_urls_title)} urls")
+print(f"{len(title_indexes)} tokens uniques\n\n")
+
+# Description
+
+description_indexes = dict_indexes['description_index']
+
+all_urls_description = set()
+
+for docs in description_indexes.values():
+    all_urls_description.update(docs.keys())
+print(f"{len(all_urls_description)} urls")
+print(f"{len(description_indexes)} tokens uniques\n\n")
+
+# Reviews
+
+reviews_indexes = dict_indexes['reviews_index']
+print(reviews_indexes.values())
+mark = [r['mean_mark'] for r in reviews_indexes.values() if r['total_reviews'] > 0]
+nb_reviews = [r['total_reviews'] for r in reviews_indexes.values()]
+
+if mark:
+        print(f"Note moyenne: {sum(mark)/len(mark):.2f}/5")
+        print(f"Avis moyen: {sum(nb_reviews)/len(nb_reviews):.2f}\n\n")
+
+WEIGHTS = {
+    "bm25_title": 10,      # plus important car plus informatif
+    "bm25_desc": 1,        
+    "exact_match": 50,     # très pertinent si match exact
+    "position_0": 20,      # très pertinent si la requête est au début
+    "reviews_avg": 2,      # pour la qualité
+    "reviews_count": 0.1   # pour la poularité
+}
+
+# Implémenter la fonction bm25 ainsi qu’une fonction de match exact
 
 
-def bm25_title():
+def bm25_title(query_token,title_index,matching_urls):
+    for tok in query_token:
+        nb_url_with_token = len(title_index.get(tok,{}))
     pass
 
-def bm25_description():
+def bm25_description(query,description_index):
     pass
 
 
-
+# Implémenter une fonction de scoring linéaire 
+""" Combinant :
+* Fréquence des tokens dans les documents
+• Présence dans le titre vs description
+• Les avis
+• Autres signaux identifiés comme pertinents
+• Utilisez l’information de position quand vous y avez accès
+"""
 
