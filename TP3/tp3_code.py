@@ -246,11 +246,9 @@ def format_results_to_json(scored_results, query, products_data, total_docs):
 
 def run_tests(title_index, description_index, reviews_index, synonyms, products):
     test_queries = [
-        "smartphone case",
-        "usb cable",
-        "coffee mug",
+        "smartphone usa",
+        "chocolat white italy",
         "running shoes",
-        "office chair",
     ]
     
     for query in test_queries:
@@ -282,7 +280,7 @@ if __name__ == "__main__":
     all_docs = get_all_urls(title_index) | get_all_urls(description_index)
 
     while True:
-        query = input("\nQuery (or 'quit'): ")
+        query = input("\nQuery or 'quit': ")
         if query == "quit":
             break
 
