@@ -15,102 +15,175 @@ qu'ils peuvent être mis à jour donc je ne l'ai pas fait. Pour un TP ça risque
 dans la vraie vie, on pourrait consulter une fois de temps en temps le robots.txt pour voir s'il a changé. """
 
 def check_politess(url):
+    """ 
+    Vérifie si le crawling est autorisé selon le fichier robots.txt de l'url 
+    
+    Returns:
+        bool: True si le crawling est autorisé, False sinon
+    """
     parsed = urlparse(url)
     robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt" # on part à la racine de l'url
     print(robots_url)
     rp = urllib.robotparser.RobotFileParser()
     rp.set_url(robots_url)
-    rp.read()
-    time.sleep(1) 
+    try:
+        rp.read()
+    except Exception as e:
+        print(f"Impossible de lire robots.txt: {e}")
+        return True  # si pas de robots.txt alors on autorise
+    
+    time.sleep(1)  # permet au serveur de ne pas être surchargé 
     return rp.can_fetch("*", url)
+
 
 # Développer une fonction pour parser le HTML
 
 def html_parser(url):
+    """
+    
+    Returns:
+        None ou Objet BeautifulSoup si autorisé"""
     if check_politess(url):
-        response = requests.get(url)
-        soup = BeautifulSoup( response.text , 'html.parser')
-        return soup 
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            return soup
+        except Exception as e:
+            print(f"Erreur parsing {url} : {e}")
+            return None
+    else:
+        print(f"Crawl non autorisé pour {url}")
+        return None
+
     
 # Extraire titre, premier paragraphe et liens et l’information d’où viennent les liens
 
-def nettoyer_url(url,url_depart='https://web-scraping.dev'):
+def nettoyer_url(url,url_depart):
     # Il y'a des liens qui sont relatifs
     parsed_url = urlparse(url)
     if parsed_url.scheme and parsed_url.netloc:
         return url
     return urljoin(url_depart, url)
     
-def get_link(soup_detail):
-    global liste_url 
-    body = soup_detail.find('body')
-    balises_avec_link_interessant = body.find_all('a',href=True)
-    links=[]
-    for content in balises_avec_link_interessant:
-        links.append(content['href'])
+def get_link(soup_detail, url_base,visited):
+    """
+    Extrait tous les liens internes.
 
-    links=[nettoyer_url(link) for link in links]
-    liste_url.extend(links)
-    liste_url=list(set(liste_url))
-    print(f"Nombre d'urls à visiter : {len(liste_url)}")
+    Args:
+        soup_detail (BeautifulSoup): Objet soup en sortie de htmlparse.
+        url_base (str)
+        visited (set): Set des urls déjà visitées.
+
+    Returns:
+        list: Liste des nouveaux liens internes non visités.
+    """
+    body = soup_detail.find('body')
+    if not body:
+        return []
+    
+    balises_avec_link = body.find_all('a', href=True)
+    links = []
+    
+    for content in balises_avec_link:
+        link_nettoye = nettoyer_url(content['href'], url_base)
+        
+        if urlparse(link_nettoye).netloc == urlparse(url_base).netloc:
+            if link_nettoye not in visited:
+                links.append(link_nettoye)
+    
+    links = list(set(links))
     return links
 
 def get_title(soup):
-    return soup.find('title').text
-
-def get_description(soup):
-    title = soup.find('p',class_="product-description")
-    if title is not None:
-       return title.text
+    title = soup.find('title')
+    if title:
+        return title.text.strip()
     return ""
 
-def extraire_information(url):
+def get_description(soup):
+    description = soup.find('p',class_="product-description")
+    if description is not None:
+       return description.text
+    return ""
+
+def extraire_information(url,url_base,visited):
     # donnees dans les meta property
     # og:url , og:title  ou <title>, og:description 
     # pour les links, tous les 'href' dans les body
-    global data_frame_json 
     try: 
         soup = html_parser(url)
-        links = get_link(soup)
+
+        if soup is None:
+            return None, []
+        
+        links = get_link(soup, url_base, visited)
         title = get_title(soup)
         description = get_description(soup)
+
         dict_sortie = {"url":url,
                 "title":title,
                 "description":description,
                 "links":links
                 }
-        data_frame_json.append(dict_sortie)
-        return data_frame_json
+        return dict_sortie, links
+    
     except Exception as e:
         print(f"Erreur pour la page : {url}: {e}")
-        return data_frame_json
+        return None, []
 
 
 # Logique de crawling 
 # Implémenter une file d'attente des URLs à visiter
 
 def ordre_de_priorite(liste_url):
-    # on va mettre ceux qui ont 'product' ou 'prodcuts' dans une liste et le reste dans une autre , pour prioriser les url 'product' 
+    """
+    Trie les urls pour prioriser celles contenant 'product' ou 'products'.
+
+    Args:
+        liste_url (list): Liste des urls à trier
+        
+    Returns:
+        list: Liste triée avec urls prioritaires en premier
+    """
     liste_prioritaire=[url for url in liste_url if re.search(r'product(s)?',url)]
     liste_non_prioritaire=[url for url in liste_url if not re.search(r'product(s)?',url)]
     return liste_prioritaire + liste_non_prioritaire
 
-def main(liste_url_param,nb_max):
-    global liste_url
-    liste_url = liste_url_param
-
+# ---
+def main(url_depart, url_base, nb_max):
+    """
+    Args:
+        url_depart (str): URL de départ du crawl
+        url_base (str): URL de base du site (pour les liens relatifs, robots.txt, etc)
+        nb_max (int): Nombre maximum de pages à visiter
+        
+    Returns:
+        list: Liste des dictionnaires avec les données extraites
+    """
+    liste_url = [url_depart]
+    visited = set()
+    data_frame_json = []
     pages_visitees = 0
+
     while liste_url and pages_visitees < nb_max:
         url = liste_url.pop(0)
+
         if url in visited:
-            continue
+            continue # on évite de revister une page
+        
         print(f' Crawl de la page {url}') 
-        extraire_information(url)
-        visited.add(url)   
+        visited.add(url)  
+        data, new_links = extraire_information(url, url_base, visited)
+        
+        if data:
+            data_frame_json.append(data)
+        
+        liste_url.extend(new_links)
+
         liste_url=ordre_de_priorite(liste_url) 
         pages_visitees+=1
 
-    print(f'fin {pages_visitees} pages visitées')
     return data_frame_json
 
 # Stockage des urls crawlées (10 min)- Sortir les résultats dans un fichier json
@@ -126,12 +199,8 @@ if __name__ == "__main__":
 
     url_depart = "https://web-scraping.dev/products"
     url_base = "https://web-scraping.dev"
+    nb_max = 50
 
-    liste_url=[]
-    visited = set()
-    liste_url.append(url_depart)
+    result = main(url_depart, url_base, nb_max)
 
-    data_frame_json = []
-
-    result = main(liste_url, 50)
     construire_fichier_json(result)

@@ -1,0 +1,130 @@
+{
+  "query": "black sneakers",
+  "metadata": {
+    "total_documents": 156,
+    "filtered_documents": 47,
+    "returned_results": 20
+  },
+  "results": [
+    {
+      "url": "https://web-scraping.dev/product/11",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 33.23
+    },
+    {
+      "url": "https://web-scraping.dev/product/23",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 33.23
+    },
+    {
+      "url": "https://web-scraping.dev/product/10",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 32.47
+    },
+    {
+      "url": "https://web-scraping.dev/product/22",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 31.76
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=black40",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 31.16
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=white41",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.94
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=white40",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.94
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=white42",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.94
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=white42",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.94
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=white40",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.94
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=white41",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.86
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=black42",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.86
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=black42",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.81
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=black40",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.81
+    },
+    {
+      "url": "https://web-scraping.dev/product/11?variant=black41",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.81
+    },
+    {
+      "url": "https://web-scraping.dev/product/23?variant=black41",
+      "title": "Classic Leather Sneakers",
+      "description": "Step out in style with these timeless classic leather sneakers. Made from premium genuine leather, these sneakers offer both comfort and durability. The sleek design and neutral color make them versatile for any occasion. Whether you're dressing up for a formal event or going for a casual outing, these sneakers will complement your look perfectly.",
+      "score": 30.81
+    },
+    {
+      "url": "https://web-scraping.dev/product/22?variant=red-5",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 28.68
+    },
+    {
+      "url": "https://web-scraping.dev/product/22?variant=red-6",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 28.68
+    },
+    {
+      "url": "https://web-scraping.dev/product/10?variant=red-6",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 28.68
+    },
+    {
+      "url": "https://web-scraping.dev/product/22?variant=blue-5",
+      "title": "Kids' Light-Up Sneakers",
+      "description": "Make your child's every step magical with these fun and vibrant light-up sneakers. The shoes feature colorful LED lights embedded in the sole that illuminate with each stride, creating an enchanting visual display. Made with breathable materials and a cushioned footbed, these sneakers ensure comfort for active play. Let your little one's personality shine with these exciting and playful shoes.",
+      "score": 28.57
+    }
+  ]
+}
